@@ -1,4 +1,4 @@
-package com.github.oasisakari.akaribotintellijplatformplugin
+package com.github.teahousestudios.akaribotdevplugin
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

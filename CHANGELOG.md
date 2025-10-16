@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# akari-bot-intellij-platform-plugin Changelog
+# akaribot-dev-plugin Changelog
 
 ## [Unreleased]
 ### Added

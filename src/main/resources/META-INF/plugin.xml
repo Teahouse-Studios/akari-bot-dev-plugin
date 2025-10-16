@@ -1,15 +1,17 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.oasisakari.akaribotintellijplatformplugin</id>
-    <name>akari-bot-intellij-platform-plugin</name>
-    <vendor>oasisakari</vendor>
+    <id>com.github.teahousestudios.akaribotdevplugin</id>
+    <name>Akaribot-Dev</name>
+    <vendor>TeahouseStudios</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.oasisakari.akaribotintellijplatformplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.oasisakari.akaribotintellijplatformplugin.startup.MyProjectActivity" />
+        <completion.contributor language="any" implementationClass="com.github.teahousestudios.akaribotdevplugin.completion.JsonCompletionContributor"/>
+        <notificationGroup id="Akaribot-Plugin" displayType="BALLOON" />
+        <postStartupActivity implementation="com.github.teahousestudios.akaribotdevplugin.listeners.JsonFileChangeStartupActivity"/>
     </extensions>
+
 </idea-plugin>
