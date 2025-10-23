@@ -17,6 +17,7 @@
         <notificationGroup id="Akaribot-Plugin" displayType="BALLOON" />
         <postStartupActivity implementation="com.github.teahousestudios.akaribotdevplugin.listeners.JsonFileChangeStartupActivity"/>
         <lang.foldingBuilder language="Python" implementationClass="com.github.teahousestudios.akaribotdevplugin.folding.LocaleStringFoldingBuilder"/>
+        <projectConfigurable instance="com.github.teahousestudios.akaribotdevplugin.settings.LocaleConfigurable" displayName="Akaribot Locale" />
     </extensions>
 
 </idea-plugin>

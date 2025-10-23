@@ -10,6 +10,7 @@ import java.io.File
 import java.io.FileReader
 import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
+import com.github.teahousestudios.akaribotdevplugin.settings.LocaleSettings
 
 @Service(Service.Level.PROJECT)
 class JsonLookupService(private val project: Project) {
@@ -44,9 +45,10 @@ class JsonLookupService(private val project: Project) {
     private fun load() {
         try {
             val projectPath = project.basePath
+            val localeFileName = LocaleSettings.getInstance(project).getLocaleFile()
 
-            // 读取core/locales/zh_cn.json
-            val baseLocaleFile = projectPath?.let { Paths.get(it, "core", "locales", "zh_cn.json").toFile() }
+            // 读取core/locales/{localeFileName}
+            val baseLocaleFile = projectPath?.let { Paths.get(it, "core", "locales", localeFileName).toFile() }
             val reader = when {
                 baseLocaleFile != null && baseLocaleFile.exists() ->
                     baseLocaleFile.inputStream().bufferedReader(StandardCharsets.UTF_8)
@@ -58,12 +60,12 @@ class JsonLookupService(private val project: Project) {
                 localeData = localeMap
             }
 
-            // 读取modules目录下的所有插件的locales/zh_cn.json
+            // 读取modules目录下的所有插件的locales/{localeFileName}
             val modulesDir = projectPath?.let { Paths.get(it, "modules").toFile() }
             if (modulesDir != null && modulesDir.exists() && modulesDir.isDirectory) {
                 val moduleDirs = modulesDir.listFiles { file -> file.isDirectory } ?: emptyArray()
                 for (moduleDir in moduleDirs) {
-                    val localeFile = File(moduleDir, "locales/zh_cn.json")
+                    val localeFile = File(moduleDir, "locales/$localeFileName")
                     if (localeFile.exists()) {
                         FileReader(localeFile, StandardCharsets.UTF_8).use { fileReader ->
                             val type = object : TypeToken<Map<String, String>>() {}.type
@@ -75,7 +77,7 @@ class JsonLookupService(private val project: Project) {
                 }
             }
             val group = NotificationGroupManager.getInstance().getNotificationGroup("Akaribot-Plugin")
-            group?.createNotification("本地化文件已加载", NotificationType.INFORMATION)
+            group?.createNotification("Locale file (${localeFileName}) was loaded.", NotificationType.INFORMATION)
                 ?.notify(project)
             dirty = false
         } catch (e: Exception) {

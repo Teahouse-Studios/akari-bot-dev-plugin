@@ -2,6 +2,7 @@
 package com.github.teahousestudios.akaribotdevplugin.listeners
 
 import com.github.teahousestudios.akaribotdevplugin.services.JsonLookupService
+import com.github.teahousestudios.akaribotdevplugin.settings.LocaleSettings
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.vfs.VirtualFileManager
@@ -19,10 +20,12 @@ class JsonFileChangeStartupActivity : ProjectActivity {
             override fun after(events: MutableList<out VFileEvent>) {
                 if (events.isEmpty()) return
 
+                val localeFileName = LocaleSettings.getInstance(project).getLocaleFile()
+
                 val shouldMark = events.any { event ->
                     val path = event.path.replace('\\', '/')
-                    path.endsWith("/core/locales/zh_cn.json") ||
-                            Regex(".*/modules/[^/]+/locales/zh_cn.json$").containsMatchIn(path)
+                    path.endsWith("/core/locales/$localeFileName") ||
+                            Regex(".*/modules/[^/]+/locales/${Regex.escape(localeFileName)}$").containsMatchIn(path)
                 }
 
                 if (shouldMark) {
