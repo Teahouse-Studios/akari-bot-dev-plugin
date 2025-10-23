@@ -3,6 +3,7 @@ package com.github.teahousestudios.akaribotdevplugin.completion
 import com.github.teahousestudios.akaribotdevplugin.services.JsonLookupService
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.openapi.util.TextRange
 import com.intellij.util.ProcessingContext
 
 class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
@@ -14,24 +15,46 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
         val project = parameters.position.project
         val items = JsonLookupService.getInstance(project).getLocaleData()
 
+        // find the string literal element ancestor to compute a prefix relative to the string start
+        val stringElem = findStringLiteralElement(parameters)
+        val doc = parameters.editor.document
+        val caret = parameters.offset
+        val prefix = if (stringElem != null) {
+            try {
+                val start = stringElem.textRange.startOffset
+                val raw = doc.getText(TextRange(start, caret))
+                // take substring after last space within the string literal
+                val lastSpace = raw.lastIndexOf(' ')
+                val token = if (lastSpace >= 0) raw.substring(lastSpace + 1) else raw
+                // strip leading quote characters and non-alphanumeric chars so matching focuses on the token
+                val cleaned = token.trimStart { ch -> ch == '\'' || ch == '"' || !ch.isLetterOrDigit() }
+                cleaned
+            } catch (_: Exception) {
+                ""
+            }
+        } else {
+            ""
+        }
+
+        val localResult = result.withPrefixMatcher(prefix)
+
         for (item in items) {
-            result.addElement(LookupElementBuilder.create(item.key).withTypeText(item.value))
+            localResult.addElement(LookupElementBuilder.create(item.key).withTypeText(item.value))
 
             // I18N form with InsertHandler to avoid duplicate '{' when user already typed it
             val i18n = "{I18N:${item.key}}"
             val i18nElement = LookupElementBuilder.create(i18n).withTypeText(item.value)
                 .withInsertHandler { ctx, _ ->
-                    val doc = ctx.document
-                    val start = ctx.startOffset
-                    if (start > 0) {
+                    val d = ctx.document
+                    val startOff = ctx.startOffset
+                    if (startOff > 0) {
                         try {
-                            // look backwards skipping whitespace to find a previous non-space character
-                            var i = start - 1
-                            val seq = doc.charsSequence
+                            var i = startOff - 1
+                            val seq = d.charsSequence
+                            // skip whitespace backwards
                             while (i >= 0 && seq[i].isWhitespace()) i--
                             if (i >= 0 && seq[i] == '{') {
-                                // delete from the '{' up to the insertion start (removes brace and any spaces)
-                                doc.deleteString(i, start)
+                                d.deleteString(i, startOff)
                             }
                         } catch (_: Exception) {
                             // ignore
@@ -39,7 +62,21 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
                     }
                 }
 
-            result.addElement(i18nElement)
+            localResult.addElement(i18nElement)
         }
+    }
+
+    private fun findStringLiteralElement(parameters: CompletionParameters): com.intellij.psi.PsiElement? {
+        var element = parameters.position
+        var depth = 0
+        while (element != null && depth < 40) {
+            val name = element::class.java.simpleName
+            if (name.contains("PyStringLiteralExpression") || name.contains("StringTemplateExpression") || name.contains("LiteralExpression") || name.contains("StringLiteralExpression") || name.contains("KtLiteralStringTemplateEntry")) {
+                return element
+            }
+            element = element.parent
+            depth++
+        }
+        return null
     }
 }
