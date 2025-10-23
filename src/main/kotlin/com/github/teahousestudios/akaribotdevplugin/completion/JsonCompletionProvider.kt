@@ -60,6 +60,18 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
                             // ignore
                         }
                     }
+
+                    // If a '}' already exists immediately after the inserted text, remove it
+                    try {
+                        val tailOff = ctx.tailOffset
+                        val seq = d.charsSequence
+                        if (tailOff < d.textLength && seq[tailOff] == '}') {
+                            // delete the existing trailing '}' (the one that was already typed) so we don't end up with '}}'
+                            d.deleteString(tailOff, tailOff + 1)
+                        }
+                    } catch (_: Exception) {
+                        // ignore
+                    }
                 }
 
             localResult.addElement(i18nElement)
@@ -67,7 +79,7 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
     }
 
     private fun findStringLiteralElement(parameters: CompletionParameters): com.intellij.psi.PsiElement? {
-        var element = parameters.position
+        var element: com.intellij.psi.PsiElement? = parameters.position
         var depth = 0
         while (element != null && depth < 40) {
             val name = element::class.java.simpleName
