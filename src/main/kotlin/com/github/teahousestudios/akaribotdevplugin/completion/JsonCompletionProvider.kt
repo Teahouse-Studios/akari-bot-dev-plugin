@@ -16,6 +16,7 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
 
         for (item in items) {
             result.addElement(LookupElementBuilder.create(item.key).withTypeText(item.value))
+            result.addElement(LookupElementBuilder.create("{I18N:" + item.key + "}").withTypeText(item.value))
         }
     }
 }

@@ -6,7 +6,6 @@ import com.intellij.patterns.PlatformPatterns
 
 class JsonCompletionContributor : CompletionContributor() {
     init {
-        // 简单地在所有位置提供补全，生产中可以限制 psiElement() 的具体 language / context
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(), JsonCompletionProvider())
     }
 }
