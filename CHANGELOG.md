@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# akaribot-dev-plugin Changelog
+# akari-bot-dev-plugin Changelog
 
 ## [Unreleased]
 ### Added
