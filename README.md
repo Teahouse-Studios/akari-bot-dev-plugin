@@ -1,6 +1,8 @@
 # akari-bot-dev-plugin
 
+<!-- Plugin description -->
 本插件旨在为Akari Bot的模块开发提供便利功能。
+<!-- Plugin description end -->
 
 当前实现的功能包括：
 
