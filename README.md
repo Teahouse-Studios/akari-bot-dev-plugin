@@ -1,6 +1,8 @@
 # akari-bot-dev-plugin
 
 <!-- Plugin description -->
+This plugin is designed to provide convenient functionality for developing modules for Akari Bot, and is suitable for the Pycharm platform.
+
 本插件旨在为 Akari Bot 的模块开发提供便利功能，适用于 Pycharm 平台。
 <!-- Plugin description end -->
 
