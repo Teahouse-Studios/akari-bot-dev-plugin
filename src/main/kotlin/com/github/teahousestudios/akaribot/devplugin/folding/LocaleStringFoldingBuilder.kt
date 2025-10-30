@@ -24,7 +24,7 @@ class LocaleStringFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
         if (root !is PsiFile || !root.name.endsWith(".py", ignoreCase = true)) return emptyArray()
         val project = root.project
-        val localeData = JsonLookupService.Companion.getInstance(project).getLocaleData()
+        val localeData = JsonLookupService.getInstance(project).getLocaleData()
         val descriptors = ArrayList<FoldingDescriptor>()
 
         val strings = PsiTreeUtil.findChildrenOfType(root, PyStringLiteralExpression::class.java)

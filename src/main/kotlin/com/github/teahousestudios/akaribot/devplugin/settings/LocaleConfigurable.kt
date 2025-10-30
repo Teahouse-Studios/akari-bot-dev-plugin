@@ -27,7 +27,7 @@ class LocaleConfigurable(private val project: Project) : Configurable {
 
             reloadButton!!.addActionListener {
                 // Trigger reload
-                JsonLookupService.Companion.getInstance(project).reload()
+                JsonLookupService.getInstance(project).reload()
             }
         }
         return panel
@@ -44,7 +44,7 @@ class LocaleConfigurable(private val project: Project) : Configurable {
         val selected = combo?.selectedItem as? String ?: "zh_cn.json"
         settings.setLocaleFile(selected)
         // Reload after changing
-        JsonLookupService.Companion.getInstance(project).reload()
+        JsonLookupService.getInstance(project).reload()
     }
 
     override fun getDisplayName(): String = "Akaribot Locale"

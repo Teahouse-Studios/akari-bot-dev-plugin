@@ -20,7 +20,7 @@ class JsonFileChangeStartupActivity : ProjectActivity {
             override fun after(events: MutableList<out VFileEvent>) {
                 if (events.isEmpty()) return
 
-                val localeFileName = LocaleSettings.Companion.getInstance(project).getLocaleFile()
+                val localeFileName = LocaleSettings.getInstance(project).getLocaleFile()
 
                 val shouldMark = events.any { event ->
                     val path = event.path.replace('\\', '/')
@@ -29,7 +29,7 @@ class JsonFileChangeStartupActivity : ProjectActivity {
                 }
 
                 if (shouldMark) {
-                    JsonLookupService.Companion.getInstance(project).markDirty()
+                    JsonLookupService.getInstance(project).markDirty()
                 }
             }
         })
@@ -37,7 +37,7 @@ class JsonFileChangeStartupActivity : ProjectActivity {
         // 编辑器切换时，如果有 dirty，就执行重载
         connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
             override fun selectionChanged(event: FileEditorManagerEvent) {
-                val service = JsonLookupService.Companion.getInstance(project)
+                val service = JsonLookupService.getInstance(project)
                 if (service.isDirty()) {
                     service.reload()
                 }

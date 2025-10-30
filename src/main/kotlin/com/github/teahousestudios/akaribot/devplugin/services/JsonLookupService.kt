@@ -45,7 +45,7 @@ class JsonLookupService(private val project: Project) {
     private fun load() {
         try {
             val projectPath = project.basePath
-            val localeFileName = LocaleSettings.Companion.getInstance(project).getLocaleFile()
+            val localeFileName = LocaleSettings.getInstance(project).getLocaleFile()
 
             // 读取core/locales/{localeFileName}
             val baseLocaleFile = projectPath?.let { Paths.get(it, "core", "locales", localeFileName).toFile() }

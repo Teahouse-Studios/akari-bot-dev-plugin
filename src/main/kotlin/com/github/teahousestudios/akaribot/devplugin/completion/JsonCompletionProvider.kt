@@ -15,7 +15,7 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
         result: CompletionResultSet
     ) {
         val project = parameters.position.project
-        val items = JsonLookupService.Companion.getInstance(project).getLocaleData()
+        val items = JsonLookupService.getInstance(project).getLocaleData()
 
         // find the string literal element ancestor to compute a prefix relative to the string start
         val stringElem = findStringLiteralElement(parameters)
