@@ -1,4 +1,4 @@
-package com.github.teahousestudios.akaribotdevplugin.completion
+package com.github.teahousestudios.akaribot.devplugin.completion
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType

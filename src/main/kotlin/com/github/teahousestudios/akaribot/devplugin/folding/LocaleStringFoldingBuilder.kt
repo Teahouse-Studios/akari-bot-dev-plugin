@@ -1,7 +1,7 @@
 // kotlin
-package com.github.teahousestudios.akaribotdevplugin.folding
+package com.github.teahousestudios.akaribot.devplugin.folding
 
-import com.github.teahousestudios.akaribotdevplugin.services.JsonLookupService
+import com.github.teahousestudios.akaribot.devplugin.services.JsonLookupService
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
@@ -24,7 +24,7 @@ class LocaleStringFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
         if (root !is PsiFile || !root.name.endsWith(".py", ignoreCase = true)) return emptyArray()
         val project = root.project
-        val localeData = JsonLookupService.getInstance(project).getLocaleData()
+        val localeData = JsonLookupService.Companion.getInstance(project).getLocaleData()
         val descriptors = ArrayList<FoldingDescriptor>()
 
         val strings = PsiTreeUtil.findChildrenOfType(root, PyStringLiteralExpression::class.java)

@@ -1,4 +1,4 @@
-package com.github.teahousestudios.akaribotdevplugin.settings
+package com.github.teahousestudios.akaribot.devplugin.settings
 
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.Service

@@ -1,10 +1,12 @@
-package com.github.teahousestudios.akaribotdevplugin.completion
+package com.github.teahousestudios.akaribot.devplugin.completion
 
-import com.github.teahousestudios.akaribotdevplugin.services.JsonLookupService
+import com.github.teahousestudios.akaribot.devplugin.services.JsonLookupService
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
+import kotlin.collections.iterator
 
 class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
     override fun addCompletions(
@@ -13,7 +15,7 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
         result: CompletionResultSet
     ) {
         val project = parameters.position.project
-        val items = JsonLookupService.getInstance(project).getLocaleData()
+        val items = JsonLookupService.Companion.getInstance(project).getLocaleData()
 
         // find the string literal element ancestor to compute a prefix relative to the string start
         val stringElem = findStringLiteralElement(parameters)
@@ -78,8 +80,8 @@ class JsonCompletionProvider : CompletionProvider<CompletionParameters>() {
         }
     }
 
-    private fun findStringLiteralElement(parameters: CompletionParameters): com.intellij.psi.PsiElement? {
-        var element: com.intellij.psi.PsiElement? = parameters.position
+    private fun findStringLiteralElement(parameters: CompletionParameters): PsiElement? {
+        var element: PsiElement? = parameters.position
         var depth = 0
         while (element != null && depth < 40) {
             val name = element::class.java.simpleName

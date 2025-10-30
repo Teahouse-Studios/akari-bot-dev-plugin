@@ -1,5 +1,6 @@
-package com.github.teahousestudios.akaribotdevplugin.settings
+package com.github.teahousestudios.akaribot.devplugin.settings
 
+import com.github.teahousestudios.akaribot.devplugin.services.JsonLookupService
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
@@ -26,7 +27,7 @@ class LocaleConfigurable(private val project: Project) : Configurable {
 
             reloadButton!!.addActionListener {
                 // Trigger reload
-                com.github.teahousestudios.akaribotdevplugin.services.JsonLookupService.getInstance(project).reload()
+                JsonLookupService.Companion.getInstance(project).reload()
             }
         }
         return panel
@@ -43,7 +44,7 @@ class LocaleConfigurable(private val project: Project) : Configurable {
         val selected = combo?.selectedItem as? String ?: "zh_cn.json"
         settings.setLocaleFile(selected)
         // Reload after changing
-        com.github.teahousestudios.akaribotdevplugin.services.JsonLookupService.getInstance(project).reload()
+        JsonLookupService.Companion.getInstance(project).reload()
     }
 
     override fun getDisplayName(): String = "Akaribot Locale"

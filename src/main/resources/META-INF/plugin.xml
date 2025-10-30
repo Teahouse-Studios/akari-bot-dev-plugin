@@ -4,8 +4,8 @@
     <name>Akaribot-Dev</name>
     <vendor>TeahouseStudios</vendor>
 
-    <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.python-core-capable</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>org.toml.lang</depends>
     <depends>com.intellij.modules.python</depends>
 
 
@@ -13,11 +13,11 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <completion.contributor language="any" implementationClass="com.github.teahousestudios.akaribotdevplugin.completion.JsonCompletionContributor"/>
+        <completion.contributor language="any" implementationClass="com.github.teahousestudios.akaribot.devplugin.completion.JsonCompletionContributor"/>
         <notificationGroup id="Akaribot-Plugin" displayType="BALLOON" />
-        <postStartupActivity implementation="com.github.teahousestudios.akaribotdevplugin.listeners.JsonFileChangeStartupActivity"/>
-        <lang.foldingBuilder language="Python" implementationClass="com.github.teahousestudios.akaribotdevplugin.folding.LocaleStringFoldingBuilder"/>
-        <projectConfigurable instance="com.github.teahousestudios.akaribotdevplugin.settings.LocaleConfigurable" displayName="Akaribot Locale" />
+        <postStartupActivity implementation="com.github.teahousestudios.akaribot.devplugin.listeners.JsonFileChangeStartupActivity"/>
+        <lang.foldingBuilder language="Python" implementationClass="com.github.teahousestudios.akaribot.devplugin.folding.LocaleStringFoldingBuilder"/>
+        <projectConfigurable instance="com.github.teahousestudios.akaribot.devplugin.settings.LocaleConfigurable" displayName="Akaribot Locale" />
     </extensions>
 
 </idea-plugin>

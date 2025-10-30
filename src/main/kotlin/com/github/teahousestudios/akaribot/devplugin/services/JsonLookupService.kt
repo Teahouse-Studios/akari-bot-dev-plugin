@@ -1,5 +1,6 @@
-package com.github.teahousestudios.akaribotdevplugin.services
+package com.github.teahousestudios.akaribot.devplugin.services
 
+import com.github.teahousestudios.akaribot.devplugin.settings.LocaleSettings
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.Service
@@ -10,7 +11,6 @@ import java.io.File
 import java.io.FileReader
 import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
-import com.github.teahousestudios.akaribotdevplugin.settings.LocaleSettings
 
 @Service(Service.Level.PROJECT)
 class JsonLookupService(private val project: Project) {
@@ -45,7 +45,7 @@ class JsonLookupService(private val project: Project) {
     private fun load() {
         try {
             val projectPath = project.basePath
-            val localeFileName = LocaleSettings.getInstance(project).getLocaleFile()
+            val localeFileName = LocaleSettings.Companion.getInstance(project).getLocaleFile()
 
             // 读取core/locales/{localeFileName}
             val baseLocaleFile = projectPath?.let { Paths.get(it, "core", "locales", localeFileName).toFile() }
