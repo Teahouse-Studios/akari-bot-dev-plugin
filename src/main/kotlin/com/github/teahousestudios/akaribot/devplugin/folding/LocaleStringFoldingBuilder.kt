@@ -75,5 +75,5 @@ class LocaleStringFoldingBuilder : FoldingBuilderEx(), DumbAware {
         return placeholders[node]
     }
 
-    override fun isCollapsedByDefault(node: ASTNode): Boolean = true
+    override fun isCollapsedByDefault(node: ASTNode): Boolean = node.psi is PyStringLiteralExpression
 }
