@@ -48,7 +48,7 @@ dependencies {
             "PY" -> "Pythonid"
             else -> "PythonCore"
         }
-        create(type, version, useInstaller = false)
+        this.create(type, version) { useInstaller = false }
         bundledPlugins(
             bundledPlugins.get().map { it.trim() } + listOf(bundledPyCharmPlugin)
         )
