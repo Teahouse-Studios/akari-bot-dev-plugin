@@ -2,7 +2,6 @@
 package com.github.teahousestudios.akaribot.devplugin.listeners
 
 import com.github.teahousestudios.akaribot.devplugin.services.JsonLookupService
-import com.github.teahousestudios.akaribot.devplugin.settings.LocaleSettings
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.vfs.VirtualFileManager
@@ -20,16 +19,13 @@ class JsonFileChangeStartupActivity : ProjectActivity {
             override fun after(events: MutableList<out VFileEvent>) {
                 if (events.isEmpty()) return
 
-                val localeFileName = LocaleSettings.getInstance(project).getLocaleFile()
+                val settings = com.github.teahousestudios.akaribot.devplugin.settings.LocaleSettings.getInstance(project)
+                if (!settings.isEnabled()) return
 
-                val shouldMark = events.any { event ->
-                    val path = event.path.replace('\\', '/')
-                    path.endsWith("/core/locales/$localeFileName") ||
-                            Regex(".*/modules/[^/]+/locales/${Regex.escape(localeFileName)}$").containsMatchIn(path)
-                }
+                val service = JsonLookupService.getInstance(project)
 
-                if (shouldMark) {
-                    JsonLookupService.getInstance(project).markDirty()
+                if (events.any { event -> service.isWatchedPath(event.path) }) {
+                    service.markDirty()
                 }
             }
         })
@@ -37,6 +33,9 @@ class JsonFileChangeStartupActivity : ProjectActivity {
         // 编辑器切换时，如果有 dirty，就执行重载
         connection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object : FileEditorManagerListener {
             override fun selectionChanged(event: FileEditorManagerEvent) {
+                val settings = com.github.teahousestudios.akaribot.devplugin.settings.LocaleSettings.getInstance(project)
+                if (!settings.isEnabled()) return
+
                 val service = JsonLookupService.getInstance(project)
                 if (service.isDirty()) {
                     service.reload()
