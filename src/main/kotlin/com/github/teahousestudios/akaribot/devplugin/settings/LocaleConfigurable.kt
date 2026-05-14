@@ -14,7 +14,7 @@ class LocaleConfigurable(private val project: Project) : Configurable {
     private var whitelistArea: JTextArea? = null
     private var reloadButton: JButton? = null
 
-    private val localeOptions = arrayOf("zh_cn.json", "zh_tw.json", "en_us.json", "ja_jp.json")
+    private val localeOptions = arrayOf("zh_cn.json", "zh_tw.json", "en_us.json", "ja_jp.json", "ko_kr.json")
 
     override fun createComponent(): JComponent? {
         if (panel == null) {
